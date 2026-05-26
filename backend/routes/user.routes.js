@@ -1,10 +1,11 @@
 import express from "express";
 import { 
+    changePassword,
     checkCookie, 
-    getUserData, 
+    getProfileData, 
     loginUser, 
     logoutUser, 
-    signUpUser } from "../controllers/user.controller.js";
+    signUpUser } from "../controllers/user.controllers.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 
@@ -26,7 +27,12 @@ router.post("/logout", logoutUser);
 router.get("/getUserProfile",
     authMiddleware.verifyToken,
     authMiddleware.authRole("user"),
-    getUserData);
+    getProfileData);
 
+//change password
+router.post("/change-password",
+    authMiddleware.verifyToken,
+    authMiddleware.authRole("user"),
+    changePassword);
 
 export default router; 

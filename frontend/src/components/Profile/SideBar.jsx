@@ -90,7 +90,7 @@ const SideBar = () => {
         minHeight: "100vh",
       }}
     >
-      <div className="text-center mb-5">
+      {/* <div className="text-center mb-5">
         <FaUserCircle
           size={70}
           className="text-primary mb-3"
@@ -103,7 +103,7 @@ const SideBar = () => {
         <p className="text-muted small">
           Blogger & Developer
         </p>
-      </div>
+      </div> */}
       <ul className="nav nav-pills flex-column gap-2">
 
         {SideBarLinks.map((item, i) => {

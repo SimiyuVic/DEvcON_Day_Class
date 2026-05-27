@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaUserGear } from "react-icons/fa6";
 import { FiHelpCircle } from "react-icons/fi";
 
-
 import {
   FaHome,
   FaHeart,
@@ -16,6 +15,9 @@ import { authActions } from "../../store/auth";
 import { toast } from "react-toastify";
 
 const SideBar = () => {
+
+  const user = useSelector((state)=>state.user.user);
+
   const location = useLocation();
 
   const history = useNavigate();
@@ -90,20 +92,20 @@ const SideBar = () => {
         minHeight: "100vh",
       }}
     >
-      {/* <div className="text-center mb-5">
+      <div className="text-center mb-3">
         <FaUserCircle
           size={70}
           className="text-primary mb-3"
         />
 
         <h5 className="fw-bold mb-1">
-          Victor Simiyu
+         {user?.userName}
         </h5>
 
         <p className="text-muted small">
-          Blogger & Developer
+          {user?.userEmail}
         </p>
-      </div> */}
+      </div>
       <ul className="nav nav-pills flex-column gap-2">
 
         {SideBarLinks.map((item, i) => {

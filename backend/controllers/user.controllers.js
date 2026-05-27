@@ -104,6 +104,7 @@ export const loginUser = async(req,res)=>{
         maxAge: 2 * 24 * 60 * 60 * 1000,
         secure: true,
         sameSite: "None",
+        path: "/"
     });
 
     res.status(201).json({

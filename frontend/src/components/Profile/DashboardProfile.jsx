@@ -1,10 +1,14 @@
-import axios from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
 import { FaUserCircle, FaHeart, FaFileAlt, FaComments } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import axios from "axios"; 
+import { useEffect } from "react";
+import { useState } from "react";
 
 const DashboardProfile = () => {
+
+  const profile = useSelector((state) => state.user.user);
+
+  
   const stats = [
     {
       title: "My Blogs",
@@ -23,39 +27,66 @@ const DashboardProfile = () => {
     },
   ];
 
-  const [profile, setProfile] = useState("");
-
-  const backendLink = useSelector((state)=>state.prod.link);
-  //console.log(backendLink);
-
-  useEffect(()=>{
-    const fetch = async()=>{
-      const res = await axios.get(`${backendLink}/api/auth/getUserProfile`, {
-        withCredentials: true
-      })
-      //console.log(res.data.data)
-      setProfile(res.data.data);
-    }
-    fetch();
-  },[backendLink]);
-
   return (
     <div className="container-fluid">
-      <div className="card shadow-sm border-0 rounded-4 mb-4">
-        <div className="card-body d-flex align-items-center gap-3">
+      <div className="card shadow border-0 rounded-4 mb-4 overflow-hidden">
+        <div
+          className="card-body p-4 d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4"
+          style={{
+            background: "linear-gradient(135deg, #0d6efd, #4dabf7)",
+            color: "white",
+          }}
+        >
+          {/* Avatar */}
           <div
-            className="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center"
-            style={{ width: "70px", height: "70px", fontSize: "2rem" }}
+            className="d-flex justify-content-center align-items-center rounded-circle bg-white shadow"
+            style={{
+              width: "90px",
+              height: "90px",
+              fontSize: "3rem",
+              color: "#0d6efd",
+              flexShrink: 0,
+            }}
           >
             <FaUserCircle />
           </div>
 
-          <div>
-            <h3 className="mb-1">Welcome Back, {profile.userName} </h3>
-            <p className="text-muted mb-0">
-              Manage your blogs, favourites and profile here.
-            </p>
-            <p>{profile.userEmail}</p>
+          {/* User Info */}
+          <div className="flex-grow-1 text-center text-md-start">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+              <div>
+                <h2 className="fw-bold mb-1">
+                  Welcome Back, {profile?.userName}
+                </h2>
+
+                <p className="mb-2 opacity-75">
+                  Manage your blogs, favourites and profile here.
+                </p>
+              </div>
+
+              <span
+                className="badge rounded-pill px-3 py-2 mt-2 mt-md-0"
+                style={{
+                  background: "rgba(255,255,255,0.2)",
+                  backdropFilter: "blur(6px)",
+                  fontSize: "0.9rem",
+                }}
+              >
+                Active User
+              </span>
+            </div>
+
+            {/* Email */}
+            <div
+              className="mt-3 px-3 py-2 rounded-3 d-inline-block"
+              style={{
+                background: "rgba(255,255,255,0.15)",
+                backdropFilter: "blur(6px)",
+              }}
+            >
+              <small className="d-block opacity-75">Email Address</small>
+              <span className="fw-semibold">{profile?.userEmail}</span>
+            </div>
           </div>
         </div>
       </div>

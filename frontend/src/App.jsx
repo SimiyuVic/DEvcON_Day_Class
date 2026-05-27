@@ -20,15 +20,16 @@ import EditBlog from "./components/AdminComponents/ManageBlogs/ManageBlogs"
 import UpdateBlog from "./components/AdminComponents/ManageBlogs/Update/UpdateBlog"
 import ManageAccount from "./components/Profile/ManageAccount"
 import Help from "./components/Profile/Help"
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify"
+import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import axios from "axios";
-import { authActions } from "./store/auth.js";
+import axios from "axios"
+import { authActions } from "./store/auth.js"
+import { setUser } from "./store/user.js"
 
 
 function App() {
-  const backendLink = useSelector((state)=>state.prod.link);
+const backendLink = useSelector((state)=>state.prod.link);
   const dispatch = useDispatch();
   //check if cookie exists
   useEffect(()=>{
@@ -45,10 +46,32 @@ function App() {
     }
     
     fetch();
-  },[backendLink]); 
+  },[]);
+
+  //fetch user data
+  useEffect(()=>{
+    const fetch = async()=>{
+    try
+      {
+        const res = await axios.get(`${backendLink}/api/auth/getUserProfile`, 
+          {
+            withCredentials: true
+          }
+        );
+        dispatch(setUser(res.data.data));
+        console.log(res);
+      }
+      catch(error)
+      {
+
+      }
+    }
+    fetch();
+  })
   return (
     <div>
-    <ToastContainer />
+
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />

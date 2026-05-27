@@ -30,7 +30,7 @@ router.get("/getUserProfile",
     getProfileData);
 
 //change password
-router.post("/change-password",
+router.put("/change-password",
     authMiddleware.verifyToken,
     authMiddleware.authRole("user"),
     changePassword);

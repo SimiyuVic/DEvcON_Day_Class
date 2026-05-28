@@ -269,5 +269,36 @@ export const changePassword = async (req, res) => {
     }
 };
 
+//change Avatar
+export const changeAvatar = async(req, res)=>{
+    try
+    {
+        const { user } = req; 
+        if(!req.file)
+        {
+            return res.status(400).json({
+                success: false,
+                message: "No Avatar Uploaded!"
+            });
+        }
+
+        user.userAvatar = req.file.path;
+        
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Avatar Uploaded !"
+        });
+    }
+    catch(error)
+    {
+        return res.status(500).json({
+            success: true,
+            message: "Error while uploading avatar!"
+        });
+    }
+}
+
 
 

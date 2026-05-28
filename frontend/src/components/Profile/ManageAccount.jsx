@@ -67,6 +67,39 @@ const ManageAccount = () => {
     
   }
 
+  const handleChangeAvatar = async()=>{
+    try
+    {
+      const formData = new FormData();
+      formData.append("avatar",changeAvatar);
+
+      const res = await axios.put(`${backendUrl}/api/auth/change-avatar`,
+        formData,
+        {
+          withCredentials: true
+        }
+      );
+      console.log(res);
+      if(res.data.success)
+        {
+            toast.success(res.data.message)
+        }
+
+    }
+    catch(error)
+    {
+        //console.error(error);
+        if (error.response && error.response.data) {
+            if (error.response.data.success === false) {
+                toast.error(error.response.data.message);
+            }
+            
+        } else {
+            toast.error("Server is unreachable. Please try again later!");
+        }
+    }
+  }
+
   return (
     <div className="container py-4">
 
@@ -105,7 +138,7 @@ const ManageAccount = () => {
               onChange={changeImage}
               accept="image/*"
             />
-            <button className="btn btn-primary mt-3">
+            <button className="btn btn-primary mt-3" onClick={handleChangeAvatar}>
               Change Avatar
             </button>
 

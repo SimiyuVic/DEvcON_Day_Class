@@ -23,7 +23,13 @@ const userSchema = new mongoose.Schema({
         enum: ["user", "Admin"],
         default: "user",
         
+    },
+    userAvatar: {
+        type: String
     }
+},
+{
+    timestamps: true
 });
 
 const User = mongoose.model("User", userSchema);

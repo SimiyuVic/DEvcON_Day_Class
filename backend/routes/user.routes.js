@@ -1,5 +1,6 @@
 import express from "express";
 import { 
+    changeAvatar,
     changePassword,
     checkCookie, 
     getProfileData, 
@@ -7,6 +8,7 @@ import {
     logoutUser, 
     signUpUser } from "../controllers/user.controllers.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/upload.middleware.js";
 
 
 const router = express.Router();
@@ -34,5 +36,12 @@ router.put("/change-password",
     authMiddleware.verifyToken,
     authMiddleware.authRole("user"),
     changePassword);
+
+//change avatar
+router.put("/change-avatar",
+    authMiddleware.verifyToken,
+    authMiddleware.authRole("user"),
+    upload.single("avatar"),
+    changeAvatar);
 
 export default router; 

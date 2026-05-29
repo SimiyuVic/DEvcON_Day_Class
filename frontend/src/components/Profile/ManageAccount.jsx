@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { CiGlass, CiMail } from "react-icons/ci";
@@ -15,8 +15,10 @@ const ManageAccount = () => {
   //fetch the globally stored as a state backend utl
   const backendUrl = useSelector((state)=>state.prod.link);
 
+  const [profile, setProfile] = useState("");
+
   //fetch user data from redux state in App.jsx
-  const user = useSelector((state)=>state.user.user);
+  //const user = useSelector((state)=>state.user.user);
 
   //console.log(backendUrl);
   const [changeAvatar, setChangeAvatar] = useState(null);
@@ -35,6 +37,28 @@ const ManageAccount = () => {
     const { name, value } = e.target;
     setPasswords({...Passwords, [name]: value});
   }
+
+  //fetch user data
+  useEffect(()=>{
+    const fetch = async()=>{
+    try
+      {
+        const res = await axios.get(`${backendUrl}/api/auth/getUserProfile`, 
+          {
+            withCredentials: true
+          }
+        );
+        //dispatch(setUser(res.data.data));
+        setProfile(res.data.data);
+        //console.log(res);
+      }
+      catch(error)
+      {
+
+      }
+    }
+    fetch();
+  },[backendUrl]);
 
   const handleChangePassword = async(e)=>{
     e.preventDefault();
@@ -119,16 +143,23 @@ const ManageAccount = () => {
                 className="w-100 h-100 d-flex align-items-center justify-content-center"
                 style={{ cursor: "pointer" }}
               >
-                {changeAvatar ? (
-                  <img
-                    src={URL.createObjectURL(changeAvatar)}
-                    alt="Avatar"
-                    className="w-100 h-100"
-                    style={{ objectFit: "cover" }}
-                  />
-                ) : (
-                  <FaUser size={60} className="text-secondary" />
-                )}
+                {
+                  //console.log(user)
+                  profile && profile.userAvatar ? (
+                    <img
+                      src={
+                        changeAvatar
+                        ? URL.createObjectURL(changeAvatar)
+                        : `${profile.userAvatar}` 
+                      }
+                      alt="Avatar"
+                      className="w-100 h-100"
+                      style={{ objectFit: "cover" }}
+                    />
+                  ) : (
+                    <FaUser size={60} className="text-secondary" />
+                  )
+                }
               </label>
             </div>
             <input
@@ -148,7 +179,7 @@ const ManageAccount = () => {
           <div className="flex-grow-1">
             <div className="p-3 rounded-3 bg-light border">
 
-              <h4 className="mb-1 fw-bold">{user?.userName}</h4>
+              <h4 className="mb-1 fw-bold">{profile.userName}</h4>
 
               <p className="mb-2 text-muted">
                 Blogger • Developper
@@ -156,7 +187,7 @@ const ManageAccount = () => {
 
               <div className="d-flex flex-column gap-1">
                 <small className="text-muted">
-                  <CiMail />  {user?.userEmail}
+                  <CiMail />  {profile.userEmail}
                 </small>
               </div>
 

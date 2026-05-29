@@ -6,7 +6,9 @@ import { useState } from "react";
 
 const DashboardProfile = () => {
 
-  const profile = useSelector((state) => state.user.user);
+  //const profile = useSelector((state) => state.user.user);
+  const backendURL = useSelector((state)=>state.prod.link);
+  const [profile, setProfile] = useState("");
 
   
   const stats = [
@@ -27,6 +29,28 @@ const DashboardProfile = () => {
     },
   ];
 
+  //fetch user data
+  useEffect(()=>{
+    const fetch = async()=>{
+    try
+      {
+        const res = await axios.get(`${backendURL}/api/auth/getUserProfile`, 
+          {
+            withCredentials: true
+          }
+        );
+        //dispatch(setUser(res.data.data));
+        setProfile(res.data.data);
+        console.log(res);
+      }
+      catch(error)
+      {
+
+      }
+    }
+    fetch();
+  },[backendURL]);
+
   return (
     <div className="container-fluid">
       <div className="card shadow border-0 rounded-4 mb-4 overflow-hidden">
@@ -39,16 +63,26 @@ const DashboardProfile = () => {
         >
           {/* Avatar */}
           <div
-            className="d-flex justify-content-center align-items-center rounded-circle bg-white shadow"
+            className="d-flex justify-content-center align-items-center rounded-circle bg-white shadow overflow-hidden"
             style={{
               width: "90px",
               height: "90px",
-              fontSize: "3rem",
-              color: "#0d6efd",
               flexShrink: 0,
             }}
           >
-            <FaUserCircle />
+            {profile?.userAvatar ? (
+              <img
+                src={profile.userAvatar}
+                alt="User Avatar"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            ) : (
+              <FaUserCircle size={60} color="#0d6efd" />
+            )}
           </div>
 
           {/* User Info */}
@@ -56,7 +90,7 @@ const DashboardProfile = () => {
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
               <div>
                 <h2 className="fw-bold mb-1">
-                  Welcome Back, {profile?.userName}
+                  Welcome Back, {profile.userName}
                 </h2>
 
                 <p className="mb-2 opacity-75">
@@ -85,7 +119,7 @@ const DashboardProfile = () => {
               }}
             >
               <small className="d-block opacity-75">Email Address</small>
-              <span className="fw-semibold">{profile?.userEmail}</span>
+              <span className="fw-semibold">{profile.userEmail}</span>
             </div>
           </div>
         </div>

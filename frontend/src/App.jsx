@@ -25,7 +25,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import axios from "axios"
 import { authActions } from "./store/auth.js"
-import { setUser } from "./store/user.js"
+//import { setUser } from "./store/user.js"
 
 
 function App() {
@@ -48,26 +48,7 @@ const backendLink = useSelector((state)=>state.prod.link);
     fetch();
   },[]);
 
-  //fetch user data
-  useEffect(()=>{
-    const fetch = async()=>{
-    try
-      {
-        const res = await axios.get(`${backendLink}/api/auth/getUserProfile`, 
-          {
-            withCredentials: true
-          }
-        );
-        dispatch(setUser(res.data.data));
-        console.log(res);
-      }
-      catch(error)
-      {
-
-      }
-    }
-    fetch();
-  })
+  
   return (
     <div>
 

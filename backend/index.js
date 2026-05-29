@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/user.routes.js";
+import adminRoutes from "./routes/admin.routes.js"
 import cors from "cors";
 import cookierParser from "cookie-parser";
 
@@ -20,8 +21,11 @@ app.use(cookierParser());
 
 const PORT = process.env.PORT;
 
-//sign-up
+//user
 app.use("/api/auth", authRoutes);
+
+//admin
+app.use("/api/admin", adminRoutes);
 
 
 const startServer = async()=>{

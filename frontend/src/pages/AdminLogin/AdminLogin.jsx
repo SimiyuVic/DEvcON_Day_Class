@@ -1,7 +1,15 @@
 import { useState } from "react";
-
+import axios from "axios"; 
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
+
+    const redirect = useNavigate();
+    
+    const backendUrl = useSelector((state)=>state.prod.link);
+
     const [Inputs, setInputs] =useState({
                 userEmail: "",
                 userPassword: "",
@@ -10,6 +18,34 @@ const AdminLogin = () => {
             const change = (e)=>{
                 const {name,value} = e.target;
                 setInputs({...Inputs, [name]: value});
+            }
+    
+            const handleAdminLogin = async(e)=>{
+                e.preventDefault();
+                try 
+                {
+                    const res = await axios.post(`${backendUrl}/api/admin/admin-login`,
+                        Inputs, {
+                            withCredentials: true
+                        }
+                    );
+
+                    if(res.data.success)
+                    {
+                        toast.success(res.data.message)
+                    }
+                    redirect("/admin-dashboard");
+                } catch (error) 
+                {
+                    if (error.response && error.response.data) {
+                        if (error.response.data.success === false) {
+                            toast.error(error.response.data.message);
+                        }
+                        
+                    } else {
+                        toast.error("Server is unreachable. Please try again later!");
+                    }
+                }
             }
     return ( 
         <div className="container py-5">
@@ -25,7 +61,7 @@ const AdminLogin = () => {
                                    Login to Continue!
                                 </p>
                             </div>
-                            <form>
+                            <form onSubmit={handleAdminLogin}>
                                 <div class="form-floating mb-3">
                                     <input 
                                         type="email" 

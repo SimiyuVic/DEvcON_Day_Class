@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/user.routes.js";
-import adminRoutes from "./routes/admin.routes.js"
+import adminRoutes from "./routes/admin.routes.js";
+import createcategory from "./routes/category.routes.js"
 import cors from "cors";
 import cookierParser from "cookie-parser";
 
@@ -27,15 +28,17 @@ app.use("/api/auth", authRoutes);
 //admin
 app.use("/api/admin", adminRoutes);
 
+//create category
+app.use("/api/category", createcategory);
+
 
 const startServer = async()=>{
     try
     {
-        await connectDB();
-
     app.listen(PORT, ()=>{
         console.log(`Server listening to PORT ${PORT}`)
-    })
+    });
+    await connectDB();
     }
     catch(error)
     {

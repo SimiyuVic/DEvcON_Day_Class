@@ -17,11 +17,17 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    blogCategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: true
+    },
     blogLikes: {
         type: Number,
-        default: 0,
+        default: 0
     }
-},{
+},
+{
     timestamps: true
 });
 

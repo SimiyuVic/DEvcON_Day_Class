@@ -71,47 +71,44 @@ export const loginAdmin = async(req,res)=>{
 }
 
 //create blog
-export const createBlog = async(req, res)=>{
-    try 
-    {
-        const {user} = req;
-        const { blogTitle, blogDescription, blogContent} = req.body;
+export const createBlog = async (req, res) => {
+  try {
+    const { blogTitle, blogDescription, blogContent, blogCategory } = req.body;
 
-        if(!blogTitle || !blogDescription || !blogContent)
-        {
-            res.status(400).json({
-                success: false,
-                message: "All Form Fields Required!"
-            });
-        }
-        if(!req.file)
-        {
-            res.status(400).json({
-                success: false,
-                message: "No Image Selected!"
-            });
-        }
-
-        //saving the data
-        const newBlog = new Blog({
-            blogTitle,
-            blogDescription,
-            blogContent,
-            blogImage: req.file.path
-        });
-
-        await newBlog.save();
-
-        res.status(201).json({
-            success: true,
-            message: "Blog Created!"
-        });
-
-    } catch (error) 
-    {
-        res.status(500).json({
-            success: false,
-            message: "Something went wrong while trying to LogIn!"
-        });
+    if (!blogTitle || !blogDescription || !blogContent || !blogCategory) {
+      return res.status(400).json({
+        success: false,
+        message: "All Form Fields Required!",
+      });
     }
-}
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No Image Selected!",
+      });
+    }
+
+    const newBlog = new Blog({
+      blogTitle,
+      blogDescription,
+      blogContent,
+      blogImage: req.file.path,
+      blogCategory, 
+    });
+
+    await newBlog.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "Blog Created!",
+    });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while creating blog!",
+    });
+  }
+};

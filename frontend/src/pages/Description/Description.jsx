@@ -1,10 +1,14 @@
 import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa";
 import { BsChatRightQuote } from "react-icons/bs";
+import { useParams } from "react-router-dom";
 
 
 
 const Description = () => {
+    
+    const { id } = useParams();
+
     return ( 
         <div className="container my-5">
             <div className="text-center mb-5">

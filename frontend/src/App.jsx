@@ -60,7 +60,7 @@ const backendLink = useSelector((state)=>state.prod.link);
           <Route path="/blogs" element={<BlogList />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/description/:id" element={<Description />}/>
-          <Route path="/categories/:id" element={<Categories />}/>
+          <Route path="/category/:id" element={<Categories />}/>
 
           <Route path="/profile" element={<Profile />}>
             <Route index element={<DashboardProfile />} />

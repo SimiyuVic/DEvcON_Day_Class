@@ -5,21 +5,23 @@ const BlogCard = ({ blog }) => {
         <div className="card blog-card border-0 shadow-sm h-100">
 
             <div className="card-body d-flex flex-column">
-
-                <small className="text-secondary mb-2">
-                    {blog.date}
-                </small>
+                <img 
+                src={blog.blogImage}
+                alt={blog.blogTitle}
+                style={{height: "130px", objectFit: "cover"}}
+                />
 
                 <h4 className="fw-bold mb-3">
-                    {blog.title}
+                    {blog.blogTitle}
                 </h4>
-
+                
                 <p className="text-muted flex-grow-1">
-                    {blog.excerpt}
+                    {blog.blogContent.substring(0,90)}. . .
                 </p>
 
+
                 <Link
-                    to="/description/4646466473bvc"
+                    to={`/description/${blog._id}`}
                     className="btn btn-outline-primary btn-sm mt-3"
                 >
                     Read More

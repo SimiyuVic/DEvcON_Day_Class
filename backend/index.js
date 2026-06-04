@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/user.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import blogRoutes from "./routes/blog.routes.js";
 import createcategory from "./routes/category.routes.js"
 import cors from "cors";
 import cookierParser from "cookie-parser";
@@ -12,7 +13,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:5173"],
+    origin: "http://localhost:5173",
     credentials: true,
 }))
 
@@ -30,6 +31,9 @@ app.use("/api/admin", adminRoutes);
 
 //create category
 app.use("/api/category", createcategory);
+
+//fetch blogs
+app.use("/api/blogs", blogRoutes);
 
 
 const startServer = async()=>{

@@ -1,37 +1,45 @@
 import { Link } from "react-router-dom";
+import axios from "axios"
+import {useSelector} from "react-redux";
+import { useState, useEffect } from "react";
 
 const Categories = () => {
-    const categories = [
+    const backendUrl = useSelector((state)=>state.prod.link);
+    const [categories, setCategories] = useState([]);
+
+    const fetchCategories = async()=>{
+        try 
         {
-            name: "Data Structures",
-            to: "/categories/dsa",
-        },
-        {
-            name: "MERN STACK",
-            to: "/categories/mern-stack",
-        },
-        {
-            name: "NEXT JS",
-            to: "/categories/next-js",
-        },
-    ];
+            const res = await axios.get(`${backendUrl}/api/category/fetchCategories`, {
+                withCredentials: true
+            });
+            setCategories(res.data.allCategories);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(()=>{
+        fetchCategories();
+    }, []);
+    
 
     return (
         <div className="container my-5">
             <h3 className="mb-4 fw-bold text-center">Explore Categories</h3>
             <div className="row g-3 justify-content-center">
-                {categories.map((category, index) => (
+                {categories && categories.map((category, index) => (
                     <div key={index} className="col-12 col-md-4">
 
                         <Link
-                            to={category.to}
+                            to={`/category/${category._id}`}
                             className="text-decoration-none"
                         >
                             <div
                                 className="p-4 text-center shadow-sm rounded category-card"
                             >
                                 <h5 className="fw-semibold m-0">
-                                    {category.name}
+                                    {category.categoryTitle}
                                 </h5>
                             </div>
                         </Link>

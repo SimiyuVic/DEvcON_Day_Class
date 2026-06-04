@@ -2,8 +2,10 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddBlog = () => {
+  const redirect = useNavigate();
   const backendUrl = useSelector((state) => state.prod.link);
 
   const [blogTitle, setBlogTitle] = useState("");
@@ -45,6 +47,7 @@ const AddBlog = () => {
         setBlogImage(null);
         setBlogCategory("");
       }
+      redirect("/admin-dashboard/manage-blog");
 
     } catch (error) {
       setLoading(false);

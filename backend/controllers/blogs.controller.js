@@ -81,3 +81,28 @@ export const blogContent = async(req, res)=>{
         });
     }
 }
+
+//delete blog
+export const deleteBlog = async(req, res)=>{
+    try {
+        const { id } = req.params;
+        const blog = await Blog.findByIdAndDelete(id);
+        if(!blog)
+        {
+            return res.status(404).json({
+            success: false,
+            message: "Blog Does Not Exist!"
+        });
+        return res.status(200).json({
+            success: true,
+            message: "Blog Deleted!"
+        });
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Cannot Delete Blog!"
+        });
+    }
+}

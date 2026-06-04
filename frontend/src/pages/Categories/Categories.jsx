@@ -1,26 +1,31 @@
+import { useParams } from "react-router-dom";
 import BlogCard from "../../components/BlogCard/BlogCard";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Categories = () => {
-    const blogs = [
-        {
-            title: "Understanding JavaScript Closures",
-            excerpt: "Learn how closures work in JavaScript and why they are important in modern development.",
-            to: "/blogs/js-closures",
-            date: "May 2026",
-        },
-        {
-            title: "Getting Started with React Hooks",
-            excerpt: "A beginner-friendly guide to useState, useEffect and custom hooks.",
-            to: "/blogs/react-hooks",
-            date: "April 2026",
-        },
-        {
-            title: "Building REST APIs with Node.js",
-            excerpt: "Step-by-step guide to building scalable APIs using Express and Node.js.",
-            to: "/blogs/node-api",
-            date: "March 2026",
-        },
-    ];
+    const [blogs, setBlogs] = useState([]);
+    const {id} = useParams();
+    const backendUrl = useSelector((state)=>state.prod.link);
+
+    useEffect(()=>{
+        const fetchBlogsByCategory = async()=>{
+            try {
+                const res = await axios.get(`${backendUrl}/api/category/blogCategories/${id}`, {
+                    withCredentials: true
+                });
+
+                setBlogs(res.data.blogs);
+            } 
+            catch (error) 
+            {
+                console.log(error);
+            }
+        }
+        fetchBlogsByCategory();
+    },[]);
     return ( 
         <div className="container my-5">
 
@@ -28,11 +33,11 @@ const Categories = () => {
                 className="text-center fw-bold mb-5"
                 style={{ color: "#171819" }}
             >
-               Category Name Will be Here!
+               Click to Read
             </h2>
 
             <div className="row g-4">
-                {blogs.map((blog, index) => (
+                {blogs && blogs.map((blog, index) => (
                     <div key={index} className="col-12 col-md-4">
                         <BlogCard blog={blog} />
                     </div>

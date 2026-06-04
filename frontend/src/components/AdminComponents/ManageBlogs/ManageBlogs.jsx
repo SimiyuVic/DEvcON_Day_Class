@@ -1,30 +1,31 @@
+import { useSelector } from "react-redux";
 import BlogTable from "../../BlogCard/BlogTable";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 
 const EditBlog = () => {
 
-    const blogs = [
+    const backendUrl = useSelector((state)=>state.prod.link);
+    const [blogs, setBlogs] = useState([]);
+
+    const fetchBlogs = async()=>{
+        try 
         {
-            id: 1,
-            title: "Understanding JavaScript Closures",
-            excerpt: "Learn how closures work in JavaScript and why they are important in modern development.",
-            to: "/blogs/js-closures",
-            date: "May 2026",
-        },
-        {
-            id: 2,
-            title: "Getting Started with React Hooks",
-            excerpt: "A beginner-friendly guide to useState, useEffect and custom hooks.",
-            to: "/blogs/react-hooks",
-            date: "April 2026",
-        },
-        {
-            id: 3,
-            title: "Building REST APIs with Node.js",
-            excerpt: "Step-by-step guide to building scalable APIs using Express and Node.js.",
-            to: "/blogs/node-api",
-            date: "March 2026",
-        },
-    ];
+            const res = await axios.get(`${backendUrl}/api/blogs/allBlogs`, 
+                {
+                    withCredentials: true
+                }
+            );
+            setBlogs(res.data.blogs);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(()=>{
+        fetchBlogs();
+    }, []);
 
     return (
         <div className="container my-5">

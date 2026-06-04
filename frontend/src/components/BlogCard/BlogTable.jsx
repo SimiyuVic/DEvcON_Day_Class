@@ -15,20 +15,20 @@ const BlogTable = ({ blogs = [] }) => {
                 </thead>
 
                 <tbody>
-                    {blogs.length > 0 ? (
-                        blogs.map((blog) => (
-                            <tr key={blog.id || blog._id}>
+                    {blogs && blogs.length > 0 ? (
+                        blogs.map((blog, index) => (
+                            <tr key={blog._id}>
                                 
                                 <td className="text-muted">
-                                    {blog.date}
+                                    {index + 1}
                                 </td>
 
                                 <td className="fw-bold">
-                                    {blog.title}
+                                    {blog.blogTitle}
                                 </td>
 
                                 <td className="text-muted" style={{ maxWidth: "400px" }}>
-                                    {blog.excerpt.substring(0,30)} . . .
+                                    {blog.blogDescription.substring(0,30)} . . .
                                 </td>
 
                                 <td>

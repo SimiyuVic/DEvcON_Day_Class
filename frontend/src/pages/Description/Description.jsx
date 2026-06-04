@@ -2,12 +2,36 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaGithub } from "react-icons/fa";
 import { BsChatRightQuote } from "react-icons/bs";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 
 
 const Description = () => {
-    
+
+    const backendUrl = useSelector((state)=>state.prod.link);
     const { id } = useParams();
+
+    const [blog, setBlog] = useState([]);
+
+    //fetch blogDetails
+    const fetchBlogDetails = async()=>{
+        try 
+        {
+            const res = await axios.get(`${backendUrl}/api/blogs/blogDetails/${id}`, {
+                withCredentials: true
+            });
+            setBlog(res.data.blog);
+        } 
+        catch (error) 
+        {
+            console.log(error)
+        }
+    }
+    useEffect(()=>{
+        fetchBlogDetails();
+    },[]);
 
     return ( 
         <div className="container my-5">
@@ -20,25 +44,18 @@ const Description = () => {
                         <div className="row g-0 align-items-center">
                             <div className="col-md-3 text-center p-3">
                                 <img 
-                                    src="/profile.jpg" 
-                                    alt="Author"
+                                    src={blog && blog.blogImage} 
+                                    alt={blog && blog.blogTitle}
                                     className="rounded-circle img-fluid"
-                                    style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                                    style={{objectFit: 'cover' }}
                                 />
                             </div>
                             <div className="col-md-9">
                                 <div className="card-body">
-                                    <h5 className="card-title mb-1">Simiyu Vic (DeadPool .lol:)</h5>
+                                    <h5 className="card-title mb-1">
+                                        {blog && blog.blogTitle}
+                                    </h5>
                                     <p className="text-muted mb-2">Developer & Tech Enthusiast</p>
-                                    <p className="card-text">
-                                        <i className="me-2">
-                                            <FaXTwitter />
-                                        </i> @SimiyuVic
-                                        <span className="mx-2">•</span>
-                                        <i className="me-2">
-                                            <FaGithub />
-                                        </i> SimiyuVic
-                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -49,15 +66,11 @@ const Description = () => {
                 <div className="col-md-8">
                     <div className="card border-0 bg-light">
                         <div className="card-body p-4">
-                            <h3 className="mb-3">NextJs and API Design</h3>
-                            <p className="lead">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </p>
+                            <h3 className="mb-3">
+                                {blog && blog.blogDescription}
+                            </h3>
                             <p>
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
-                            <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
+                                {blog && blog.blogContent}
                             </p>
                             <hr className="my-4" />
                             <p className="fst-italic text-muted">

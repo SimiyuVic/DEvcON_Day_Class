@@ -1,5 +1,6 @@
 import express from "express";
 import Category from "../models/category.model.js";
+import Blog from "../models/blog.model.js";
 
 //create category
 export const createCategory = async (req, res) => {
@@ -61,6 +62,35 @@ export const fetchCategory = async(req, res)=>{
         return res.status(500).json({
         success: false,
         message: "Cant create category!",
+        });
+    }
+}
+
+//display blogs by category
+export const blogsByCategory = async(req, res)=>{
+    try 
+    {
+     const { id } = req.params;  
+     const blogs = await Blog.find({blogCategory: id}).populate("blogCategory");
+
+     if(!blogs) 
+     {
+        return res.status(404).json({
+          success: false,
+          message: " No Blogs Found!",
+        });
+     }
+
+     return res.status(200).json({
+      success: true,
+      blogs
+     });
+    } 
+    catch (error) 
+    {
+      return res.status(500).json({
+        success: false,
+        message: "Cant Fetch Blogs!",
         });
     }
 }
